@@ -11,6 +11,7 @@ The addon is read-focused. It supports:
 - reading schema metadata
 - reading individual records or record ranges
 - returning field values as JavaScript strings, numbers, booleans, `null`, or `Buffer`
+- querying registered tables through a SQL facade with joins
 
 It does not currently expose write/update APIs.
 
@@ -19,6 +20,8 @@ It does not currently expose write/update APIs.
 ```bash
 cd bindings/nodejs
 npm install
+npm run smoke
+npm run sql-smoke
 ```
 
 That runs `node-gyp rebuild` and compiles the addon against the bundled pxlib sources.
@@ -40,6 +43,46 @@ console.log(db.getRecord(0));
 
 db.close();
 ```
+
+## SQL usage
+
+```js
+const path = require("path");
+const pxlib = require("./");
+
+const sql = new pxlib.SqlDatabase({
+  mode: "sqlite",
+  tables: {
+    articulos: path.resolve("../../assets/tarticulos.DB"),
+  },
+});
+
+const rows = sql.query(`
+  SELECT a.Codigo, a.DESCRIPCION
+  FROM articulos a
+  INNER JOIN articulos b ON a.Codigo = b.Codigo
+  WHERE a.Codigo <= 3
+  ORDER BY a.Codigo ASC
+`);
+
+console.log(rows);
+sql.close();
+```
+
+Supported SQL backends:
+
+- `materialized`: loads the referenced tables into memory, then executes SQL in JavaScript
+- `streaming`: scans rows from the addon and uses hashed equi-joins where possible
+- `sqlite`: imports the registered tables into SQLite through Python's built-in `sqlite3` module, then runs the SQL there
+
+Supported SQL subset for the JavaScript backends:
+
+- `SELECT ... FROM ...`
+- `INNER JOIN` and `LEFT JOIN`
+- `WHERE` with `AND`
+- comparison operators: `=`, `!=`, `<>`, `<`, `<=`, `>`, `>=`
+- `ORDER BY`
+- `LIMIT` and `OFFSET`
 
 ## API
 
@@ -70,6 +113,9 @@ Convenience wrapper around `new Database(...)`.
 ### Exports
 
 - `Database`
+- `SqlDatabase`
+- `createSqlDatabase()`
+- `parseSql()`
 - `constants`
 - `version()`
 - `open()`
