@@ -1,0 +1,19 @@
+{
+  "name": "pxlib-node",
+  "version": "0.1.0",
+  "description": "Node.js native bindings for pxlib Paradox database reading",
+  "main": "index.js",
+  "gypfile": true,
+  "scripts": {
+    "install": "node-gyp rebuild",
+    "build": "node-gyp rebuild"
+  },
+  "keywords": [
+    "paradox",
+    "database",
+    "pxlib",
+    "napi",
+    "native-addon"
+  ],
+  "license": "LGPL-2.0-or-later"
+}
