@@ -824,3 +824,6 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/c,c++,cmake,linux,macos,windows,autotools,visualstudio,visualstudiocode,jetbrains
 _codeql_*
+/bindings/nodejs/build/
+/bindings/nodejs/package-lock.json
+assets/*.DB

@@ -7,6 +7,8 @@ function open(path, options) {
 }
 
 module.exports = {
-  ...binding,
+  Database: binding.Database,
+  constants: binding.constants,
+  version: binding.version,
   open,
 };

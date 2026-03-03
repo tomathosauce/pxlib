@@ -6,7 +6,8 @@
   "gypfile": true,
   "scripts": {
     "install": "node-gyp rebuild",
-    "build": "node-gyp rebuild"
+    "build": "node-gyp rebuild",
+    "smoke": "node scripts/smoke.js"
   },
   "keywords": [
     "paradox",

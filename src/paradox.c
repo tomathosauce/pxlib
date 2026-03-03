@@ -26,6 +26,9 @@
 #include <string.h>
 #include <errno.h>
 #include <math.h>
+#ifdef HAVE_LOCALE_H
+#include <locale.h>
+#endif
 #if defined(WIN32) || defined(OS2)
 #include <fcntl.h>
 #endif
